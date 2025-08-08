@@ -2,13 +2,13 @@
 <html>
   <head>
     <title>Welcome (I-FAD)</title>
-<script src="./jspsych/jspsych.js"></script>
-    <script src="./jspsych/plugin-image-keyboard-response.js"></script>
-    <script src="./jspsych/plugin-html-keyboard-response.js"></script>
-    <script src="./jspsych/plugin-preload.js"></script>
-    <link href="./jspsych/jspsych.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="./jspsych/my_experiment_style_MRI.css">
-    <script src="./jspsych/plugin-categorize-html.js"></script>
+<script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-image-keyboard-response.js"></script>
+    <script src="jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugin-preload.js"></script>
+        <script src="jspsych/plugin-categorize-html.js"></script>
+    <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="jspsych/my_experiment_style_MRI.css">
   </head>
   <body></body>
   <script>
@@ -30,31 +30,30 @@
     /* preload images */
     var preload = {
       type: jsPsychPreload,
-      images: ['img/key.png','sdvp/3068.jpg', 'sdvp/6570.jpg', 'sdvp/SDVPS_1.jpg', 'sdvp/SDVPS_2.jpg', 'sdvp/SDVPS_3.jpg', 'sdvp/SDVPS_4.jpg', 'sdvp/SDVPS_5.jpg', 'sdvp/SDVPS_6.jpg', 'sdvp/SDVPS_7.jpg','sdvp/SDVPS_8.jpg','sdvp/symbol1.jpg','sdvp/symbol2.jpg', 'sdvp/symbol3.jpg','sdvp/symbol4.jpg','sdvp/symbol5.jpg','sdvp/symbol6.jpg','sdvp/symbol7.jpg', 'sdvp/symbol8.jpg', 'sdvp/symbol9.jpg','sdvp/symbol10.jpg','sdvp/symbol11.jpg', 'sdvp/symbol12.jpg','sdvp/symbol13.jpg', 'sdvp/symbol14.jpg', 'sdvp/symbol15.jpg', 'sdvp/symbol16.jpg', 'sdvp/symbol17.jpg','sdvp/symbol18.jpg', 'sdvp/symbol19.jpg', 'sdvp/symbol20.jpg','sdvp/symbol21.jpg','sdvp/symbol22.jpg','sdvp/symbol23.jpg','iaps_neg/1525.jpg', 'iaps_neg/2345_1.jpg','iaps_neg/3150.jpg','iaps_neg/3170.jpg','iaps_neg/7380.jpg','iaps_neg/9140.jpg','iaps_neg/9184.jpg','iaps_neg/9301.jpg','iaps_neg/9326.jpg','iaps_neg/9611.jpg','iaps_neg/9903.jpg','iaps_pos/1463.jpg','iaps_pos/1811.jpg','iaps_pos/2071.jpg','iaps_pos/2154.jpg','iaps_pos/4610.jpg','iaps_pos/5480.jpg','iaps_pos/5829.jpg','iaps_pos/7400.jpg','iaps_pos/7492.jpg','iaps_pos/8380.jpg','iaps_pos/8503.jpg', 'iaps_neut/6150.jpg','iaps_neut/7001.jpg','iaps_neut/7002.jpg','iaps_neut/7009.jpg','iaps_neut/7026.jpg','iaps_neut/7052.jpg','iaps_neut/7055.jpg','iaps_neut/7080.jpg','iaps_neut/7100.jpg','iaps_neut/7150.jpg','iaps_neut/7705.jpg','sdvp/symbol24.jpg','sdvp/symbol25.jpg','sdvp/symbol26.jpg','sdvp/symbol27.jpg','sdvp/symbol28.jpg','sdvp/symbol29.jpg','sdvp/symbol30.jpg','sdvp/symbol31.jpg','sdvp/symbol32.jpg','sdvp/symbol33.jpg','sdvp/symbol34.jpg','sdvp/symbol35.jpg','sdvp/symbol36.jpg','sdvp/symbol37.jpg','sdvp/symbol38.jpg','sdvp/symbol39.jpg','sdvp/symbol40.jpg','sdvp/symbol41.jpg','sdvp/symbol42.jpg','sdvp/symbol43.jpg']
+      images: ['img/key.png','sdvp/3068.jpg', 'sdvp/6570.jpg', 'sdvp/SDVPS_1.jpg', 'sdvp/SDVPS_2.jpg', 'sdvp/SDVPS_3.jpg', 'sdvp/SDVPS_4.jpg', 'sdvp/SDVPS_5.jpg', 'sdvp/SDVPS_6.jpg', 'sdvp/SDVPS_7.jpg','sdvp/SDVPS_8.jpg','sdvp/symbol1.jpg','sdvp/symbol2.jpg', 'sdvp/symbol3.jpg','sdvp/symbol4.jpg','sdvp/symbol5.jpg','sdvp/symbol6.jpg','sdvp/symbol7.jpg', 'sdvp/symbol8.jpg', 'sdvp/symbol9.jpg','sdvp/symbol10.jpg','sdvp/symbol11.jpg', 'sdvp/symbol12.jpg','sdvp/symbol13.jpg', 'sdvp/symbol14.jpg', 'sdvp/symbol15.jpg', 'sdvp/symbol16.jpg', 'sdvp/symbol17.jpg','sdvp/symbol18.jpg', 'sdvp/symbol19.jpg', 'sdvp/symbol20.jpg','sdvp/symbol21.jpg','sdvp/symbol22.jpg','sdvp/symbol23.jpg','iaps_neg/1525.jpg', 'iaps_neg/2345_1.jpg','iaps_neg/3150.jpg','iaps_neg/3170.jpg','iaps_neg/7380.jpg','iaps_neg/9140.jpg','iaps_neg/9184.jpg','iaps_neg/9301.jpg','iaps_neg/9326.jpg','iaps_neg/9611.jpg','iaps_neg/9903.jpg','iaps_pos/1463.jpg','iaps_pos/1811.jpg','iaps_pos/2071.jpg','iaps_pos/2154.jpg','iaps_pos/4610.jpg','iaps_pos/5480.jpg','iaps_pos/5829.jpg','iaps_pos/7400.jpg','iaps_pos/7492.jpg','iaps_pos/8380.jpg','iaps_pos/8503.jpg', 'iaps_neut/6150.jpg','iaps_neut/7001.jpg','iaps_neut/7002.jpg','iaps_neut/7009.jpg','iaps_neut/7026.jpg','iaps_neut/7052.jpg','iaps_neut/7055.jpg','iaps_neut/7080.jpg','iaps_neut/7100.jpg','iaps_neut/7150.jpg','iaps_neut/7705.jpg','sdvp/symbol24.jpg','sdvp/symbol25.jpg','sdvp/symbol26.jpg','sdvp/symbol27.jpg','sdvp/symbol28.jpg','sdvp/symbol29.jpg','sdvp/symbol30.jpg','sdvp/symbol31.jpg','sdvp/symbol32.jpg','sdvp/symbol33.jpg','sdvp/symbol34.jpg','sdvp/symbol35.jpg','sdvp/symbol36.jpg','sdvp/symbol37.jpg','sdvp/symbol38.jpg','sdvp/symbol39.jpg','sdvp/symbol40.jpg','sdvp/symbol41.jpg','sdvp/symbol42.jpg','sdvp/symbol43.jpg'],
     };
     timeline.push(preload);
 
      /* define welcome message trial */
      var welcome = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: " <p>Welcome to the Modified Affect-Misattribution Task! </p> <p>Press any button for instructions. </p>"
+      stimulus: " <p>Welcome to the Modified Affect-Misattribution Task! </p> <p>Press any button for instructions. </p>",
     };
     timeline.push(welcome);
 
     /* define instructions trial */
     var instructions = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: `
+      stimulus: '
         <p>In this task, an image will appear on the screen followed by a symbol.</p><p>Using the response pad, please rate <strong>HOW PLEASANT a SYMBOL is</strong>, as quickly as you can. </p>
         <p>Try to focus on rating the symbol.</p>
-        <p>Press any button to continue.</p>
-      `,
-      post_trial_gap: 1000
+        <p>Press any button to continue.</p>',
+      post_trial_gap: 1000,
     };
     timeline.push(instructions);
     var instructions2 = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: `
+      stimulus: '
        <p>If the symbol is...</p> <p><strong>Very unpleasant</strong>, press the button 1</p>
         <p><strong>Unpleasant</strong>, press the button 2</p>
         <p><strong>Pleasant</strong>, press the button 3</p>
@@ -62,14 +61,14 @@
        <p> <img src='img/response_key.png' alt='Key'></div>
         </p>
         <p>Press any button to continue.</p>
-      `,
-      post_trial_gap: 1000
+      ',
+      post_trial_gap: 1000,
     };
     timeline.push(instructions2);
 /*questions for the examiner*/
 var questions = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: "<p>If you have questions or concerns, please signal to the examiner. </p> <p>If not, press any button to continue. </p>"
+      stimulus: "<p>If you have questions or concerns, please signal to the examiner. </p> <p>If not, press any button to continue. </p>",
     };
     timeline.push(questions);
 
@@ -134,7 +133,6 @@ timeline.push(MRIstart);
         {stimulus:'iaps_pos/7492.jpg',symbol: 'sdvp/symbol30.jpg'},
         {stimulus:'iaps_pos/8380.jpg',symbol: 'sdvp/symbol31.jpg'},
         {stimulus:'iaps_pos/8503.jpg',symbol: 'sdvp/symbol32.jpg'},
-
       ]
     var fixation = {
   type: jsPsychHtmlKeyboardResponse,
