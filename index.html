@@ -2,13 +2,13 @@
 <html>
   <head>
     <title>Welcome (I-FAD)</title>
-    <script src="https://unpkg.com/jspsych@7.1.2"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.0"></script>
-    <link href="https://unpkg.com/jspsych@7.1.2/css/jspsych.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="my_experiment_style_MRI.css">
-    <script src="./lib/taskflow/client.js"></script>
+<script src="./jspsych/jspsych.js"></script>
+    <script src="./jspsych/plugin-image-keyboard-response.js"></script>
+    <script src="./jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="./jspsych/plugin-preload.js"></script>
+    <link href="./jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./jspsych/my_experiment_style_MRI.css">
+    <script src="./jspsych/plugin-categorize-html.js"></script>
   </head>
   <body></body>
   <script>
@@ -16,20 +16,7 @@
 
     /* initialize jsPsych */
     var jsPsych = initJsPsych({
-        on_finish: async function() {
-
-          if (window.location !== window.parent.location) {
-            // running on server so send data to the server
-            var measure = await TaskFlow.Client.Measure.get();
-            // get data out of jspsych
-            var task_data = JSON.stringify(jsPsych.data.get().values());
-            measure.complete = true;
-            measure.json = task_data;
-            // sync measure with server
-            await TaskFlow.Client.Measure.set(measure);
-            // continue on!
-            TaskFlow.Client.Measure.end();
-          } else {
+        on_finish: function() {
             // running local
             // display the data
             jsPsych.data.displayData();
