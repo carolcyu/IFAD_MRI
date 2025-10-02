@@ -6,7 +6,7 @@ Qualtrics.SurveyEngine.addOnload(function()
 	var qthis = this;
 	qthis.hideNextButton();
 
-	// Make the question container full screen
+	// Make the question container full screen and black
 	jQuery('.QuestionText, .QuestionBody').hide();
 	jQuery('.QuestionOuter').css({
 		'position': 'fixed', 'top': '0', 'left': '0', 'width': '100%',
@@ -17,7 +17,7 @@ Qualtrics.SurveyEngine.addOnload(function()
 	// Create the display stage for the experiment
 	var displayDiv = document.createElement('div');
 	displayDiv.id = 'display_stage';
-	displayDiv.style.cssText = 'width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;';
+	displayDiv.style.cssText = 'width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: black; color: white;';
 	jQuery('.QuestionOuter').prepend(displayDiv);
 
 	// GitHub repository path
@@ -25,7 +25,6 @@ Qualtrics.SurveyEngine.addOnload(function()
 
 	// Load necessary CSS and JavaScript files
 	jQuery("<link rel='stylesheet' href='" + window.task_github + "jspsych/jspsych.css'>").appendTo('head');
-	jQuery("<link rel='stylesheet' href='" + window.task_github + "jspsych/my_experiment_style_MRI.css'>").appendTo('head');
 
 	var scripts = [
 		window.task_github + "jspsych/jspsych.js",
@@ -54,6 +53,21 @@ Qualtrics.SurveyEngine.addOnload(function()
 		try {
 			var jsPsych = initJsPsych({
 				display_element: 'display_stage',
+				
+				// =========================================================== //
+				//                 ** STYLE CORRECTION HERE ** //
+				// This directly injects the needed styles for the experiment. //
+				// =========================================================== //
+				override_css: `
+					.jspsych-display-element {
+						background-color: black;
+						color: white;
+					}
+					.jspsych-display-element p {
+						color: white;
+					}
+				`,
+
 				on_finish: function() {
 					// Clean up the keyboard listener when the experiment is done
 					document.removeEventListener('keydown', window.qualtricsKeyboardListener);
@@ -66,28 +80,19 @@ Qualtrics.SurveyEngine.addOnload(function()
 			});
 
 			// =====================================================================
-			// ==   THIS IS THE GUARANTEED KEYBOARD FIX FROM qualtrics_STT.js   ==
+			// ==      ROBUST KEYBOARD LISTENER (DO NOT CHANGE)       ==
 			// =====================================================================
 			setTimeout(function() {
-				// Define the listener function so we can remove it later
 				window.qualtricsKeyboardListener = function(event) {
 					var keyPressed = event.key;
-
-					// Directly interact with the jsPsych instance
 					try {
-						jsPsych.finishTrial({
-							response: keyPressed
-						});
+						jsPsych.finishTrial({ response: keyPressed });
 					} catch (e) {
-						// If finishTrial fails (e.g., trial doesn't expect a response),
-						// this prevents errors and allows the experiment to continue.
 						console.warn("Key press " + keyPressed + " received, but no action taken on current trial.");
 					}
 				};
-				
-				// Add the listener to the entire document
 				document.addEventListener('keydown', window.qualtricsKeyboardListener);
-			}, 1500); // Wait 1.5 seconds for the experiment to be fully initialized
+			}, 1500);
 
 			// --- IFAD TASK TIMELINE DEFINITION ---
 			var timeline = [];
@@ -103,7 +108,6 @@ Qualtrics.SurveyEngine.addOnload(function()
 			var questions = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>If you have questions or concerns, please signal to the examiner. </p> <p>If not, press any key to continue. </p>" };
 			timeline.push(questions);
 			
-			// This trial will now be advanced by the global listener when '5' is pressed
 			var MRIstart = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p> Please wait while the scanner starts up. This will take 10 seconds. </strong></p>", choices: "NO_KEYS", trial_duration: 10000, prompt: "<p> A cross (+) will appear when the task starts. </p>" };
 			timeline.push(MRIstart);
 
@@ -128,9 +132,6 @@ Qualtrics.SurveyEngine.addOnload(function()
 			var fixation = { type: jsPsychHtmlKeyboardResponse, stimulus: '<div style="font-size:60px;">+</div>', choices: "NO_KEYS", trial_duration: 1000 };
 			var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('stimulus'), choices: "NO_KEYS", trial_duration: 75, post_trial_gap: 125, stimulus_height: 650 };
 			var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('symbol'), choices: "NO_KEYS", trial_duration: 100 };
-			
-			// This response trial is now handled by the global listener.
-			// The listener will call finishTrial, recording the key press.
 			var response = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>How would you rate that symbol?</p>", choices: "NO_KEYS", trial_duration: 3000 };
 
 			var test_procedure = { timeline: [fixation, test, symbol, response], timeline_variables: test_stimuli, repetitions: 1, randomize_order: false, post_trial_gap: 500 };
