@@ -6,7 +6,7 @@ Qualtrics.SurveyEngine.addOnload(function()
 	var qthis = this;
 	qthis.hideNextButton();
 
-	// Make the question container full screen and black
+	// Make the question container full screen
 	jQuery('.QuestionText, .QuestionBody').hide();
 	jQuery('.QuestionOuter').css({
 		'position': 'fixed', 'top': '0', 'left': '0', 'width': '100%',
@@ -17,15 +17,37 @@ Qualtrics.SurveyEngine.addOnload(function()
 	// Create the display stage for the experiment
 	var displayDiv = document.createElement('div');
 	displayDiv.id = 'display_stage';
-	displayDiv.style.cssText = 'width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: black; color: white;';
 	jQuery('.QuestionOuter').prepend(displayDiv);
+
+	// =========================================================== //
+	//          ** FORCEFUL STYLE INJECTION (THE FIX) ** //
+	// =========================================================== //
+	// This creates a <style> tag and adds it to the document head,
+	// ensuring these rules override all others.
+	var css = `
+		#display_stage {
+			background-color: black !important;
+			color: white !important;
+			height: 100vh !important;
+			width: 100% !important;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		#display_stage p, #display_stage div, #display_stage strong {
+			color: white !important;
+		}
+	`;
+	var styleSheet = document.createElement("style");
+	styleSheet.type = "text/css";
+	styleSheet.innerText = css;
+	document.head.appendChild(styleSheet);
 
 	// GitHub repository path
 	window.task_github = "https://carolcyu.github.io/IFAD_MRI/";
 
-	// Load necessary CSS and JavaScript files
-	jQuery("<link rel='stylesheet' href='" + window.task_github + "jspsych/jspsych.css'>").appendTo('head');
-
+	// Load necessary jsPsych scripts
 	var scripts = [
 		window.task_github + "jspsych/jspsych.js",
 		window.task_github + "jspsych/plugin-image-keyboard-response.js",
@@ -44,7 +66,7 @@ Qualtrics.SurveyEngine.addOnload(function()
 			initExp();
 		}
 	}
-	loadScript(); // Start loading scripts
+	loadScript();
 
 	// ================================================================= //
 	//                          EXPERIMENT LOGIC                         //
@@ -53,25 +75,8 @@ Qualtrics.SurveyEngine.addOnload(function()
 		try {
 			var jsPsych = initJsPsych({
 				display_element: 'display_stage',
-				
-				// =========================================================== //
-				//                 ** STYLE CORRECTION HERE ** //
-				// This directly injects the needed styles for the experiment. //
-				// =========================================================== //
-				override_css: `
-					.jspsych-display-element {
-						background-color: black;
-						color: white;
-					}
-					.jspsych-display-element p {
-						color: white;
-					}
-				`,
-
 				on_finish: function() {
-					// Clean up the keyboard listener when the experiment is done
 					document.removeEventListener('keydown', window.qualtricsKeyboardListener);
-					
 					var ifad_data = jsPsych.data.get().json();
 					Qualtrics.SurveyEngine.setEmbeddedData("IFAD", ifad_data);
 					jQuery('#display_stage').remove();
@@ -88,7 +93,7 @@ Qualtrics.SurveyEngine.addOnload(function()
 					try {
 						jsPsych.finishTrial({ response: keyPressed });
 					} catch (e) {
-						console.warn("Key press " + keyPressed + " received, but no action taken on current trial.");
+						console.warn("Key press " + keyPressed + " ignored on current trial.");
 					}
 				};
 				document.addEventListener('keydown', window.qualtricsKeyboardListener);
@@ -148,6 +153,3 @@ Qualtrics.SurveyEngine.addOnload(function()
 		}
 	}
 });
-
-Qualtrics.SurveyEngine.addOnReady(function(){ /* Not used */ });
-Qualtrics.SurveyEngine.addOnUnload(function(){ /* Not used */ });
