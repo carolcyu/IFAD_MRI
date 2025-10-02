@@ -1,106 +1,51 @@
 Qualtrics.SurveyEngine.addOnload(function()
 {
-	// Retrieve Qualtrics object and save in qthis
 	var qthis = this;
-
-	// Hide buttons and question content
 	qthis.hideNextButton();
 	
-	// Hide the question text and make the container full screen
 	jQuery('.QuestionText, .QuestionBody').hide();
 	jQuery('.QuestionOuter').css({
-		'position': 'fixed',
-		'top': '0',
-		'left': '0',
-		'width': '100%',
-		'height': '100vh',
-		'z-index': '9999',
-		'background': 'black',
-		'margin': '0',
-		'padding': '0'
+		'position': 'fixed', 'top': '0', 'left': '0', 'width': '100%',
+		'height': '100vh', 'z-index': '9999', 'background': 'black',
+		'margin': '0', 'padding': '0'
 	});
 	
-	// Create display elements
 	var displayDiv = document.createElement('div');
 	displayDiv.id = 'display_stage';
 	displayDiv.style.cssText = 'width: 100%; height: 100vh; padding: 80px 20px 20px 20px; position: relative; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center;';
-	displayDiv.innerHTML = '<h3>Loading Experiment...</h3><p>Please wait while we load the task.</p>';
-	
-	// Insert at the top of the question area
 	jQuery('.QuestionOuter').prepend(displayDiv);
 	
-	// Define task_github globally for the IFAD task
 	window.task_github = "https://carolcyu.github.io/IFAD_MRI/";
 	
-	// Load the experiment
-	if (typeof jQuery !== 'undefined') {
-		loadExperiment();
-	}
+	// Load CSS and Scripts
+	jQuery("<link rel='stylesheet' href='" + window.task_github + "jspsych/jspsych.css'>").appendTo('head');
+	jQuery("<link rel='stylesheet' href='" + window.task_github + "jspsych/my_experiment_style_MRI.css'>").appendTo('head');
 	
-	function loadExperiment() {
-		// Update display
-		jQuery('#display_stage').html('<h3>Loading Experiment...</h3><p>Please wait while we load the task.</p>');
-		
-		// Load CSS
-		jQuery("<link rel='stylesheet' href='" + window.task_github + "jspsych/jspsych.css'>").appendTo('head');
-		jQuery("<link rel='stylesheet' href='" + window.task_github + "jspsych/my_experiment_style_MRI.css'>").appendTo('head');
-		
-		// Add inline CSS
-		jQuery("<style>").text(`
-			#display_stage { background-color: black !important; height: 100vh !important; padding: 50px 20px 20px 20px !important; width: 100% !important; position: relative !important; z-index: 1000 !important; overflow: hidden; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; box-sizing: border-box !important; }
-			.jspsych-content { background-color: black !important; width: 100% !important; height: 100vh !important; overflow: hidden; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; box-sizing: border-box !important; }
-			.jspsych-display-element { background-color: black !important; width: 100% !important; height: 100vh !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; }
-			.QuestionOuter { position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100vh !important; z-index: 9999 !important; background: black !important; margin: 0 !important; padding: 0 !important; }
-			body { overflow: hidden !important; }
-		`).appendTo('head');
-		
-		// Scripts to load for the IFAD task
-		var scripts = [
-			window.task_github + "jspsych/jspsych.js",
-			window.task_github + "jspsych/plugin-image-keyboard-response.js",
-			window.task_github + "jspsych/plugin-html-button-response.js", 
-			window.task_github + "jspsych/plugin-html-keyboard-response.js"
-		];
-		
-		loadScripts(0);
-		
-		function loadScripts(index) {
-			if (index >= scripts.length) {
-				setTimeout(initExp, 500);
-				return;
-			}
-			jQuery.getScript(scripts[index]).done(() => loadScripts(index + 1)).fail(() => {
-                jQuery('#display_stage').html('<p style="color: red;">Failed to load experiment scripts. Please refresh the page.</p>');
-            });
+	var scripts = [
+		window.task_github + "jspsych/jspsych.js",
+		window.task_github + "jspsych/plugin-image-keyboard-response.js",
+		window.task_github + "jspsych/plugin-html-button-response.js", 
+		window.task_github + "jspsych/plugin-html-keyboard-response.js"
+	];
+	
+	var loaded_scripts = 0;
+	function loadScript() {
+		if (loaded_scripts < scripts.length) {
+			jQuery.getScript(scripts[loaded_scripts], function() {
+				loaded_scripts++;
+				loadScript();
+			});
+		} else {
+			initExp();
 		}
 	}
+	loadScript();
 
     function initExp(){
         try {
-            if (typeof initJsPsych === 'undefined') {
-                jQuery('#display_stage').html('<p style="color: red;">Error: jsPsych library not loaded</p>');
-                return;
-            }
-            
-            var displayStage = document.getElementById('display_stage');
-            if (displayStage) {
-                displayStage.setAttribute('tabindex', '0');
-                displayStage.style.outline = 'none';
-                displayStage.addEventListener('click', function() { this.focus(); });
-                setTimeout(() => displayStage.focus(), 100);
-            }
-            
-            var focusInterval = setInterval(() => {
-                if (displayStage) displayStage.focus();
-            }, 100);
-
             var jsPsych = initJsPsych({
                 display_element: 'display_stage',
-                on_trial_start: function() {
-                    if (displayStage) displayStage.focus();
-                },
                 on_finish: function() {
-                    if (focusInterval) clearInterval(focusInterval);
                     var ifad_data = jsPsych.data.get().json();
                     Qualtrics.SurveyEngine.setEmbeddedData("IFAD", ifad_data);
                     jQuery('#display_stage').remove();
@@ -108,9 +53,28 @@ Qualtrics.SurveyEngine.addOnload(function()
                 }
             }); 
             
-            // <<< START IFAD EXPERIMENT TIMELINE >>>
+            // =====================================================================
+            // == ROBUST KEYBOARD LISTENER FROM qualtrics_STT.js ==
+            // =====================================================================
+            document.addEventListener('keydown', function(event) {
+                var displayStage = document.getElementById('display_stage');
+                if (displayStage) {
+                    // Create a new keyboard event
+                    var keyEvent = new KeyboardEvent('keydown', {
+                        key: event.key,
+                        code: event.code,
+                        keyCode: event.keyCode,
+                        which: event.which,
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    // Dispatch the new event directly on the jsPsych display element
+                    displayStage.dispatchEvent(keyEvent);
+                }
+            });
+            
+            // --- IFAD TIMELINE START ---
             var timeline = [];
-
             var welcome = { type: jsPsychHtmlKeyboardResponse, stimulus: " <p>Welcome to the Modified Affect-Misattribution Task! </p> <p>Press any button for instructions. </p>" };
             timeline.push(welcome);
 
@@ -154,55 +118,15 @@ Qualtrics.SurveyEngine.addOnload(function()
         
             var debrief_block = { type: jsPsychHtmlKeyboardResponse, stimulus: function() { var trials = jsPsych.data.get().filter({task: 'response'}); var rt = Math.round(trials.select('rt').mean()); return `<p>Your average response time was ${rt}ms.</p><p>Press any key to complete the experiment. Thank you for your time!</p>`; } };
             timeline.push(debrief_block);
-            
-            // <<< END IFAD EXPERIMENT TIMELINE >>>
+            // --- IFAD TIMELINE END ---
 
             jsPsych.run(timeline);
         
-            // =====================================================================
-            // == THIS IS THE CRITICAL CODE BLOCK FROM qualtrics_STT.js ==
-            // =====================================================================
-            setTimeout(function() {
-                document.addEventListener('keydown', function(event) {
-                    var currentTrial = jsPsych.getCurrentTrial();
-                    var keyPressed = event.key;
-                    
-                    if (!currentTrial || !currentTrial.data || !currentTrial.data.task) {
-                        return; // Not a task trial, do nothing
-                    }
-
-                    // For scanner trigger or MRI start trials
-                    if (currentTrial.data.task === 'mri_start' && keyPressed === '5') {
-                        jsPsych.finishTrial({ response: keyPressed });
-                    }
-                    // For response trials, allow 1, 2, 3, 4
-                    else if (currentTrial.data.task === 'response' && ['1', '2', '3', '4'].includes(keyPressed)) {
-                        // For response trials that don't end immediately, just record the response
-                        if (currentTrial.response_ends_trial === false) {
-                            jsPsych.data.write({ response: keyPressed, rt: jsPsych.getProgress().current_trial_global - currentTrial.trial_start_time });
-                        } else {
-                            jsPsych.finishTrial({ response: keyPressed });
-                        }
-                    } else {
-                        // For any other key press during a task trial, prevent default behavior
-                        // This stops keys from advancing instructions, etc., unless explicitly allowed by the trial's 'choices'
-                        var allowed_keys = currentTrial.choices;
-                        if (allowed_keys && allowed_keys !== "NO_KEYS" && !allowed_keys.includes(keyPressed)) {
-                            event.preventDefault();
-                        }
-                    }
-                });
-            }, 500); // Wait a moment for the experiment to initialize
-
         } catch (error) {
             console.error(error);
-            if (document.getElementById('display_stage')) {
-                document.getElementById('display_stage').innerHTML = '<p style="color: red;">An error occurred while initializing the experiment.</p>';
-            }
+            jQuery('#display_stage').html('<p style="color: red;">An error occurred.</p>');
         }
     }
-
 });
-
-Qualtrics.SurveyEngine.addOnReady(function(){ /*...*/ });
-Qualtrics.SurveyEngine.addOnUnload(function(){ /*...*/ });
+Qualtrics.SurveyEngine.addOnReady(function(){});
+Qualtrics.SurveyEngine.addOnUnload(function(){});
