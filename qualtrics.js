@@ -30,7 +30,7 @@ Qualtrics.SurveyEngine.addOnload(function()
     jQuery('.QuestionOuter').prepend(displayDiv);
     
     // Define task_github globally
-    window.task_github = "https://carolcyu.github.io/STT_MRI/";
+    window.task_github = "https://carolcyu.github.io/IFAD_MRI/";
     
     // Load the experiment
     if (typeof jQuery !== 'undefined') {
@@ -221,7 +221,7 @@ function initExp(){
             /* Saving task data to qualtrics */
 			var STT = jsPsych.data.get().json();
 			// save to qualtrics embedded data
-			Qualtrics.SurveyEngine.setEmbeddedData("STT", STT);
+			Qualtrics.SurveyEngine.setEmbeddedData("IFAD", IFAD);
 			
             // clear the stage
             jQuery('#display_stage').remove();
@@ -240,7 +240,7 @@ function initExp(){
     /* define welcome message trial */
     var welcome = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: " <p>Welcome to the Image Rating Task! </p> <p>Press any button for instructions. </p>",
+      stimulus: " <p>Welcome to the Modified Affect-Misattribution Task! </p> <p>Press any button for instructions. </p>",
       choices: "ALL_KEYS",
       response_ends_trial: true
     };
