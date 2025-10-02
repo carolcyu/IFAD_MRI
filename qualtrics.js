@@ -136,10 +136,17 @@ function initExp(){
 		// Ensure display stage is focused for keyboard input
 		var displayStage = document.getElementById('display_stage');
 		if (displayStage) {
+			displayStage.focus();
 			displayStage.setAttribute('tabindex', '0');
 			displayStage.style.outline = 'none';
-			displayStage.addEventListener('click', function() { this.focus(); });
-			setTimeout(function() { displayStage.focus(); }, 100);
+			
+			displayStage.addEventListener('click', function() {
+				this.focus();
+			});
+			
+			setTimeout(function() {
+				displayStage.focus();
+			}, 100);
 		}
 		
 		// Add focus management
