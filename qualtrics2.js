@@ -1,122 +1,284 @@
 Qualtrics.SurveyEngine.addOnload(function()
 {
-	// ================================================================= //
-	//                      SETUP AND INITIALIZATION                     //
-	// ================================================================= //
+    // Retrieve Qualtrics object and save in qthis
 	var qthis = this;
 	qthis.hideNextButton();
 
-	// Make the question container full screen
-	jQuery('.QuestionText, .QuestionBody').hide();
-	jQuery('.QuestionOuter').css({
-		'position': 'fixed', 'top': '0', 'left': '0', 'width': '100%',
-		'height': '100vh', 'z-index': '9999', 'background': 'black',
-		'margin': '0', 'padding': '0'
-	});
+ // Hide the question text and make the container full screen
+    jQuery('.QuestionText, .QuestionBody').hide();
+    jQuery('.QuestionOuter').css({
+        'position': 'fixed',
+        'top': '0',
+        'left': '0',
+        'width': '100%',
+        'height': '100vh',
+        'z-index': '9999',
+        'background': 'black',
+        'margin': '0',
+        'padding': '0'
+    });
 
-	// Create the display stage for the experiment
-	var displayDiv = document.createElement('div');
-	displayDiv.id = 'display_stage';
-	jQuery('.QuestionOuter').prepend(displayDiv);
+	// Create display elements
+    var displayDiv = document.createElement('div');
+    displayDiv.id = 'display_stage';
+    displayDiv.style.cssText = 'width: 100%; height: 100vh; padding: 80px 20px 20px 20px; position: relative; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center;';
+    displayDiv.innerHTML = '<h3>Loading Experiment...</h3><p>Please wait while we load the task.</p>';
+    
+	 // Insert at the top of the question area
+    jQuery('.QuestionOuter').prepend(displayDiv);
+    
+    // Define task_github globally
+    window.task_github = "https://carolcyu.github.io/STT_MRI/";
+    
+    // Load the experiment
+    if (typeof jQuery !== 'undefined') {
+        loadExperiment();
+    }
+    
+    function loadExperiment() {
+        // Update display
+        jQuery('#display_stage').html('<h3>Loading Experiment...</h3><p>Please wait while we load the task.</p>');
+        
+        // Load CSS first with error handling
+        jQuery("<link rel='stylesheet' href='" + window.task_github + "jspsych/jspsych.css'>").appendTo('head');
+        jQuery("<link rel='stylesheet' href='" + window.task_github + "jspsych/my_experiment_style_MRI.css'>").appendTo('head');
+        
+        // Add inline CSS as backup
+        jQuery("<style>").text(`
+            #display_stage {
+                background-color: black !important;
+                height: 100vh !important;
+                padding: 50px 20px 20px 20px !important;
+                width: 100% !important;
+                position: relative !important;
+                z-index: 1000 !important;
+                overflow: hidden;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                box-sizing: border-box !important;
+            }
+            #display_stage img {
+                max-width: 65% !important;
+                max-height: 50vh !important;
+                height: auto !important;
+                display: block !important;
+                margin: 10px auto !important;
+                object-fit: contain !important;
+            }
+            .jspsych-content {
+                background-color: black !important;
+                padding: 20px !important;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                width: 100% !important;
+                height: 100vh !important;
+                overflow: hidden;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                box-sizing: border-box !important;
+            }
+            .jspsych-display-element {
+                background-color: black !important;
+                width: 100% !important;
+                height: 100vh !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+            .jspsych-stimulus {
+                max-width: 100% !important;
+                max-height: 60vh !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
+            }
+            .QuestionOuter {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100vh !important;
+                z-index: 9999 !important;
+                background: black !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            body {
+                overflow: hidden !important;
+            }
+        `).appendTo('head');
+        
+        // Scripts to load
+        var scripts = [
+            window.task_github + "jspsych/jspsych.js",
+            window.task_github + "jspsych/plugin-image-keyboard-response.js",
+            window.task_github + "jspsych/plugin-html-button-response.js", 
+            window.task_github + "jspsych/plugin-html-keyboard-response.js", 
+            window.task_github + "jspsych/plugin-categorize-html.js"
+        ];
+        
+        loadScripts(0);
+        
+        function loadScripts(index) {
+            if (index >= scripts.length) {
+                // All scripts loaded, start experiment
+                setTimeout(initExp, 500);
+                return;
+            }
+            
+            jQuery.getScript(scripts[index])
+                .done(function() {
+                    loadScripts(index + 1);
+                })
+                .fail(function() {
+                    jQuery('#display_stage').html('<p style="color: red;">Failed to load experiment scripts. Please refresh the page.</p>');
+                });
+        }
+    }
 
-	// =========================================================== //
-	//          ** FORCEFUL STYLE INJECTION (THE FIX) ** //
-	// =========================================================== //
-	// This creates a <style> tag and adds it to the document head,
-	// ensuring these rules override all others.
-	var css = `
-		#display_stage {
-			background-color: black !important;
-			color: white !important;
-			height: 100vh !important;
-			width: 100% !important;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-		}
-		#display_stage p, #display_stage div, #display_stage strong {
-			color: white !important;
-		}
-	`;
-	var styleSheet = document.createElement("style");
-	styleSheet.type = "text/css";
-	styleSheet.innerText = css;
-	document.head.appendChild(styleSheet);
 
-	// GitHub repository path
-	window.task_github = "https://carolcyu.github.io/IFAD_MRI/";
+function initExp(){
+    try {
+        // Check if jsPsych is available
+        if (typeof initJsPsych === 'undefined') {
+            jQuery('#display_stage').html('<p style="color: red;">Error: jsPsych library not loaded</p>');
+            return;
+        }
+        
+        // Ensure display stage is focused for keyboard input
+        var displayStage = document.getElementById('display_stage');
+        if (displayStage) {
+            displayStage.focus();
+            displayStage.setAttribute('tabindex', '0');
+            displayStage.style.outline = 'none';
+            displayStage.style.position = 'relative';
+            displayStage.style.zIndex = '1000';
+            
+            // Make it capture all events
+            displayStage.addEventListener('click', function() {
+                this.focus();
+            });
+            
+            // Add keyboard event capture
+            displayStage.addEventListener('keydown', function(event) {
+                console.log('Display stage keydown:', event.key);
+                // Don't prevent default - let jsPsych handle it
+            });
+            
+            // Force focus after a short delay
+            setTimeout(function() {
+                displayStage.focus();
+                // Also try focusing the document body
+                document.body.focus();
+            }, 100);
+        }
+        
+        jQuery('#display_stage').html('<h3>Experiment Starting...</h3><p>Focusing display for keyboard input...</p>');
+        
+        // Add focus management
+        var focusInterval = setInterval(function() {
+            var displayStage = document.getElementById('display_stage');
+            if (displayStage) {
+                displayStage.focus();
+            }
+        }, 1000);
+        
+        // Store reference to jsPsych for later use
+        window.currentJsPsych = null;
+        
+        /* start the experiment*/
+        var jsPsych = initJsPsych({
+		/* Use the Qualtrics-mounted stage as the display element */
+	    display_element: 'display_stage',
+        on_trial_start: function() {
+            // Ensure focus on each trial
+            var displayStage = document.getElementById('display_stage');
+            if (displayStage) {
+                displayStage.focus();
+            }
+        },
+        on_trial_finish: function() {
+            // Ensure focus after each trial
+            var displayStage = document.getElementById('display_stage');
+            if (displayStage) {
+                displayStage.focus();
+            }
+        },
+        on_finish: function() {
+            // Clear the focus interval
+            if (typeof focusInterval !== 'undefined') {
+                clearInterval(focusInterval);
+            }
+            
+            /* Saving task data to qualtrics */
+			var STT = jsPsych.data.get().json();
+			// save to qualtrics embedded data
+			Qualtrics.SurveyEngine.setEmbeddedData("STT", STT);
+			
+            // clear the stage
+            jQuery('#display_stage').remove();
+            jQuery('#display_stage_background').remove();
 
-	// Load necessary jsPsych scripts
-	var scripts = [
-		window.task_github + "jspsych/jspsych.js",
-		window.task_github + "jspsych/plugin-image-keyboard-response.js",
-		window.task_github + "jspsych/plugin-html-button-response.js",
-		window.task_github + "jspsych/plugin-html-keyboard-response.js"
-	];
+            // simulate click on Qualtrics "next" button, making use of the Qualtrics JS API
+            qthis.clickNextButton();
+        }
+      }); 
+      
+      // Store jsPsych reference globally
+      window.currentJsPsych = jsPsych;
 
-	var loaded_scripts = 0;
-	function loadScript() {
-		if (loaded_scripts < scripts.length) {
-			jQuery.getScript(scripts[loaded_scripts], function() {
-				loaded_scripts++;
-				loadScript();
-			});
-		} else {
-			initExp();
-		}
-	}
-	loadScript();
-
-	// ================================================================= //
-	//                          EXPERIMENT LOGIC                         //
-	// ================================================================= //
-	function initExp(){
-		try {
-			var jsPsych = initJsPsych({
-				display_element: 'display_stage',
-				on_finish: function() {
-					document.removeEventListener('keydown', window.qualtricsKeyboardListener);
-					var ifad_data = jsPsych.data.get().json();
-					Qualtrics.SurveyEngine.setEmbeddedData("IFAD", ifad_data);
-					jQuery('#display_stage').remove();
-					qthis.clickNextButton();
-				}
-			});
-
-			// =====================================================================
-			// ==      ROBUST KEYBOARD LISTENER (DO NOT CHANGE)       ==
-			// =====================================================================
-			setTimeout(function() {
-				window.qualtricsKeyboardListener = function(event) {
-					var keyPressed = event.key;
-					try {
-						jsPsych.finishTrial({ response: keyPressed });
-					} catch (e) {
-						console.warn("Key press " + keyPressed + " ignored on current trial.");
-					}
-				};
-				document.addEventListener('keydown', window.qualtricsKeyboardListener);
-			}, 1500);
-
-			// --- IFAD TASK TIMELINE DEFINITION ---
 			var timeline = [];
-			var welcome = { type: jsPsychHtmlKeyboardResponse, stimulus: " <p>Welcome to the Modified Affect-Misattribution Task! </p> <p>Press any button for instructions. </p>" };
+
+			    /* define welcome message trial */
+
+			var welcome = { type: jsPsychHtmlKeyboardResponse, 
+				stimulus: " <p>Welcome to the Modified Affect-Misattribution Task! </p> <p>Press any button for instructions. </p>",
+				    choices: "ALL_KEYS",
+      response_ends_trial: true
+    };
 			timeline.push(welcome);
 
-			var instructions = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>In this task, an image will appear on the screen followed by a symbol.</p><p>Using the response pad, please rate <strong>HOW PLEASANT a SYMBOL is</strong>, as quickly as you can. </p><p>Try to focus on rating the symbol.</p>", post_trial_gap: 1000 };
+			var instructions = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>In this task, an image will appear on the screen followed by a symbol.</p><p>Using the response pad, please rate <strong>HOW PLEASANT a SYMBOL is</strong>, as quickly as you can. </p><p>Try to focus on rating the symbol.</p>", 
+				choices: "ALL_KEYS",
+      response_ends_trial: true,
+      post_trial_gap: 1000 
+	};
 			timeline.push(instructions);
 
-			var instructions2 = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>If the symbol is...</p> <p><strong>Very unpleasant</strong>, press the button 1</p><p><strong>Unpleasant</strong>, press the button 2</p><p><strong>Pleasant</strong>, press the button 3</p> <p><strong>Very pleasant</strong>, press the button 4.</p><p> <img src='" + window.task_github + "img/response_key.png' alt='Key'></div></p>", post_trial_gap: 1000 };
+			var instructions2 = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>If the symbol is...</p> <p><strong>Very unpleasant</strong>, press the button 1</p><p><strong>Unpleasant</strong>, press the button 2</p><p><strong>Pleasant</strong>, press the button 3</p> <p><strong>Very pleasant</strong>, press the button 4.</p><p> <img src='" + window.task_github + "img/response_key.png' alt='Key'></div></p>", 
+				choices: "ALL_KEYS",
+      response_ends_trial: true,
+      post_trial_gap: 1000 };
 			timeline.push(instructions2);
 
-			var questions = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>If you have questions or concerns, please signal to the examiner. </p> <p>If not, press any key to continue. </p>" };
-			timeline.push(questions);
-			
-			var MRIstart = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p> Please wait while the scanner starts up. This will take 10 seconds. </strong></p>", choices: "NO_KEYS", trial_duration: 10000, prompt: "<p> A cross (+) will appear when the task starts. </p>" };
-			timeline.push(MRIstart);
+			/*questions for the examiner*/
+var questions = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "<p>If you have questions or concerns, please signal to the examiner. </p> <p>If not, press any button to continue. </p>"
+    };
+    timeline.push(questions);
 
-			var test_stimuli = [
+/*define trial awaiting for the scanner keyboard button #5 */
+var MRIstart ={
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "<p> Please wait while the scanner starts up. This will take 10 seconds. </strong></p>",
+  choices: ['5'],
+ prompt: "<p> A cross (+) will appear when the task starts. </p>",
+ data: {
+    task: 'mri_start'},
+    on_finish: function(data){
+    data.response;
+ }
+};
+timeline.push(MRIstart);
+
+			var test_stimulus = [
 				{stimulus: window.task_github + 'iaps_neut/6150.jpg', symbol: window.task_github + 'sdvp/symbol33.jpg'}, {stimulus: window.task_github + 'iaps_neut/7001.jpg', symbol: window.task_github + 'sdvp/symbol34.jpg'}, {stimulus: window.task_github + 'iaps_neut/7002.jpg', symbol: window.task_github + 'sdvp/symbol35.jpg'},
                 {stimulus: window.task_github + 'iaps_neut/7009.jpg', symbol: window.task_github + 'sdvp/symbol36.jpg'}, {stimulus: window.task_github + 'iaps_neut/7026.jpg', symbol: window.task_github + 'sdvp/symbol37.jpg'}, {stimulus: window.task_github + 'iaps_neut/7052.jpg', symbol: window.task_github + 'sdvp/symbol38.jpg'},
                 {stimulus: window.task_github + 'iaps_neut/7055.jpg', symbol: window.task_github + 'sdvp/symbol39.jpg'}, {stimulus: window.task_github + 'iaps_neut/7080.jpg', symbol: window.task_github + 'sdvp/symbol40.jpg'}, {stimulus: window.task_github + 'iaps_neut/7100.jpg', symbol: window.task_github + 'sdvp/symbol41.jpg'},
@@ -134,22 +296,142 @@ Qualtrics.SurveyEngine.addOnload(function()
                 {stimulus: window.task_github + 'iaps_pos/8503.jpg', symbol: window.task_github + 'sdvp/symbol32.jpg'}
 			];
 
-			var fixation = { type: jsPsychHtmlKeyboardResponse, stimulus: '<div style="font-size:60px;">+</div>', choices: "NO_KEYS", trial_duration: 1000 };
-			var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('stimulus'), choices: "NO_KEYS", trial_duration: 75, post_trial_gap: 125, stimulus_height: 650 };
-			var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('symbol'), choices: "NO_KEYS", trial_duration: 100 };
-			var response = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>How would you rate that symbol?</p>", choices: "NO_KEYS", trial_duration: 3000 };
+    var fixation = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: '<div style="font-size:60px;">+</div>',
+  choices: "NO_KEYS",
+  trial_duration: 500,
+  data: {
+    task: 'fixation'
+  }
+};			
+var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('stimulus'), choices: "NO_KEYS", trial_duration: 75, post_trial_gap: 125, stimulus_height: 650, maintain_aspect_ration: true,
+  response_ends_trial: false,
+ };
+			
+var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('symbol'), choices: "NO_KEYS", trial_duration: 100, maintain_aspect_ration: true,
+  response_ends_trial: false,
+  };
+			
+var response = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>How would you rate that symbol?</p>", 
+	  choices: ['1', '2', '3', '4'],
+  trial_duration: 1500,
+  response_ends_trial: false,
+  data: {
+    task: 'response'
+  },
+  on_finish: function(data){
+    data.response;
+  }
+};
 
-			var test_procedure = { timeline: [fixation, test, symbol, response], timeline_variables: test_stimuli, repetitions: 1, randomize_order: false, post_trial_gap: 500 };
+			var test_procedure = { timeline: [fixation, test, symbol, response], 
+				timeline_variables: test_stimulus, repetitions: 1, randomize_order: false, post_trial_gap: 500 };
 			timeline.push(test_procedure);
 
-			var debrief_block = { type: jsPsychHtmlKeyboardResponse, stimulus: function() { var trials = jsPsych.data.get(); var rt = Math.round(trials.select('rt').mean()); return `<p>Your average response time was ${rt}ms.</p><p>Press any key to complete the experiment. Thank you for your time!</p>`; } };
-			timeline.push(debrief_block);
+var debrief_block = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function() {
 
-			jsPsych.run(timeline);
+    var trials = jsPsych.data.get().filter({task: 'response'});
+    var rt = Math.round(trials.select('rt').mean());
 
-		} catch (error) {
-			console.error(error);
-			jQuery('#display_stage').html('<p style="color: red;">A critical error occurred. Please contact the study administrator.</p>');
-		}
-	}
+    return '<p>Your average response time was ' + rt + 'ms.</p>' +
+      '<p>Press any key to complete the task. We appreciate your time!</p>';
+
+  }
+};
+timeline.push(debrief_block);
+    /* start the experiment */
+    jsPsych.run(timeline);
+    
+    // Ensure focus after experiment starts
+    setTimeout(function() {
+        var displayStage = document.getElementById('display_stage');
+        if (displayStage) {
+            displayStage.focus();
+        }
+    }, 1000);
+    
+    // Add single, clean keyboard handler
+    setTimeout(function() {
+        // Remove any existing keyboard listeners
+        document.removeEventListener('keydown', arguments.callee);
+        
+        // Add keyboard handler
+        document.addEventListener('keydown', function(event) {
+            if (window.currentJsPsych) {
+                var keyPressed = event.key;
+                var currentTrial = window.currentJsPsych.getCurrentTrial();
+                
+                // Check if this is the MRI start trial that should only accept "5"
+                if (currentTrial && currentTrial.data && currentTrial.data.task === 'mri_start') {
+                    if (keyPressed !== '5') {
+                        return; // Ignore other keys
+                    }
+                }
+                // Check if this is a practice trial that requires specific correct answers
+                else if (currentTrial && currentTrial.key_answer) {
+                    if (keyPressed !== currentTrial.key_answer) {
+                        return; // Ignore incorrect keys
+                    }
+                }
+                // Check if this is a response trial that should only accept 1-4
+                else if (currentTrial && currentTrial.data && currentTrial.data.task === 'response') {
+                    if (!['1', '2', '3', '4'].includes(keyPressed)) {
+                        return; // Ignore other keys
+                    }
+                    // For response trials, just record the response but don't advance
+                    return;
+                }
+                
+                // Try to advance trial
+                try {
+                    window.currentJsPsych.finishTrial({
+                        response: keyPressed
+                    });
+                } catch (e) {
+                    // Fallback: trigger events on display stage
+                    var displayStage = document.getElementById('display_stage');
+                    if (displayStage) {
+                        var clickEvent = new MouseEvent('click', {
+                            bubbles: true,
+                            cancelable: true
+                        });
+                        displayStage.dispatchEvent(clickEvent);
+                        
+                        var keyEvent = new KeyboardEvent('keydown', {
+                            key: keyPressed,
+                            code: event.code,
+                            bubbles: true,
+                            cancelable: true
+                        });
+                        displayStage.dispatchEvent(keyEvent);
+                    }
+                }
+            }
+        });
+    }, 2000);
+    
+    } catch (error) {
+        if (document.getElementById('display_stage')) {
+            document.getElementById('display_stage').innerHTML = '<p style="color: red;">Error initializing experiment. Please refresh the page.</p>';
+        }
+    }
+}
+
+// Close the addOnload function
 });
+
+Qualtrics.SurveyEngine.addOnReady(function()
+{
+	/*Place your JavaScript here to run when the page is fully displayed*/
+
+});
+
+Qualtrics.SurveyEngine.addOnUnload(function()
+{
+	/*Place your JavaScript here to run when the page is unloaded*/
+
+});
+
