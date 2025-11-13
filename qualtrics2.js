@@ -328,6 +328,7 @@ timeline.push(MRIstart);
   type: jsPsychHtmlKeyboardResponse,
   stimulus: '<div style="font-size:60px;">+</div>',
   choices: "NO_KEYS",
+  response_ends_trial: false,
   trial_duration: 500,
   data: {
     task: 'fixation'
