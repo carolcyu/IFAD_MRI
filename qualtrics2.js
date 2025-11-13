@@ -28,7 +28,7 @@ Qualtrics.SurveyEngine.addOnload(function()
     jQuery('.QuestionOuter').prepend(displayDiv);
     
     // Define task_github globally
-    window.task_github = "https://carolcyu.github.io/STT_MRI/";
+    window.task_github = "https://carolcyu.github.io/IFAD_MRI/";
     
     // Load the experiment
     if (typeof jQuery !== 'undefined') {
@@ -217,9 +217,9 @@ function initExp(){
             }
             
             /* Saving task data to qualtrics */
-			var STT = jsPsych.data.get().json();
+			var IFAD = jsPsych.data.get().json();
 			// save to qualtrics embedded data
-			Qualtrics.SurveyEngine.setEmbeddedData("STT", STT);
+			Qualtrics.SurveyEngine.setEmbeddedData("IFAD", IFAD);
 			
             // clear the stage
             jQuery('#display_stage').remove();
@@ -279,20 +279,48 @@ var MRIstart ={
 timeline.push(MRIstart);
 
 			var test_stimulus = [
-				{stimulus: window.task_github + 'iaps_neut/6150.jpg', symbol: window.task_github + 'sdvp/symbol33.jpg'}, {stimulus: window.task_github + 'iaps_neut/7001.jpg', symbol: window.task_github + 'sdvp/symbol34.jpg'}, {stimulus: window.task_github + 'iaps_neut/7002.jpg', symbol: window.task_github + 'sdvp/symbol35.jpg'},
-                {stimulus: window.task_github + 'iaps_neut/7009.jpg', symbol: window.task_github + 'sdvp/symbol36.jpg'}, {stimulus: window.task_github + 'iaps_neut/7026.jpg', symbol: window.task_github + 'sdvp/symbol37.jpg'}, {stimulus: window.task_github + 'iaps_neut/7052.jpg', symbol: window.task_github + 'sdvp/symbol38.jpg'},
-                {stimulus: window.task_github + 'iaps_neut/7055.jpg', symbol: window.task_github + 'sdvp/symbol39.jpg'}, {stimulus: window.task_github + 'iaps_neut/7080.jpg', symbol: window.task_github + 'sdvp/symbol40.jpg'}, {stimulus: window.task_github + 'iaps_neut/7100.jpg', symbol: window.task_github + 'sdvp/symbol41.jpg'},
-                {stimulus: window.task_github + 'iaps_neut/7150.jpg', symbol: window.task_github + 'sdvp/symbol42.jpg'}, {stimulus: window.task_github + 'iaps_neut/7705.jpg', symbol: window.task_github + 'sdvp/symbol43.jpg'}, {stimulus: window.task_github + 'sdvp/3068.jpg', symbol: window.task_github + 'sdvp/symbol1.jpg'},
-                {stimulus: window.task_github + 'sdvp/6570.jpg', symbol: window.task_github + 'sdvp/symbol2.jpg'}, {stimulus: window.task_github + 'sdvp/SDVPS_1.jpg', symbol: window.task_github + 'sdvp/symbol3.jpg'}, {stimulus: window.task_github + 'sdvp/SDVPS_2.jpg', symbol: window.task_github + 'sdvp/symbol4.jpg'},
-                {stimulus: window.task_github + 'sdvp/SDVPS_3.jpg', symbol: window.task_github + 'sdvp/symbol5.jpg'}, {stimulus: window.task_github + 'sdvp/SDVPS_4.jpg', symbol: window.task_github + 'sdvp/symbol6.jpg'}, {stimulus: window.task_github + 'sdvp/SDVPS_5.jpg', symbol: window.task_github + 'sdvp/symbol7.jpg'},
-                {stimulus: window.task_github + 'sdvp/SDVPS_6.jpg', symbol: window.task_github + 'sdvp/symbol8.jpg'}, {stimulus: window.task_github + 'sdvp/SDVPS_7.jpg', symbol: window.task_github + 'sdvp/symbol21.jpg'}, {stimulus: window.task_github + 'sdvp/SDVPS_8.jpg', symbol: window.task_github + 'sdvp/symbol22.jpg'},
-                {stimulus: window.task_github + 'iaps_neg/1525.jpg', symbol: window.task_github + 'sdvp/symbol9.jpg'}, {stimulus: window.task_github + 'iaps_neg/2345_1.jpg', symbol: window.task_github + 'sdvp/symbol10.jpg'}, {stimulus: window.task_github + 'iaps_neg/3150.jpg', symbol: window.task_github + 'sdvp/symbol11.jpg'},
-                {stimulus: window.task_github + 'iaps_neg/3170.jpg', symbol: window.task_github + 'sdvp/symbol12.jpg'}, {stimulus: window.task_github + 'iaps_neg/7380.jpg', symbol: window.task_github + 'sdvp/symbol13.jpg'}, {stimulus: window.task_github + 'iaps_neg/9140.jpg', symbol: window.task_github + 'sdvp/symbol14.jpg'},
-                {stimulus: window.task_github + 'iaps_neg/9184.jpg', symbol: window.task_github + 'sdvp/symbol15.jpg'}, {stimulus: window.task_github + 'iaps_neg/9301.jpg', symbol: window.task_github + 'sdvp/symbol16.jpg'}, {stimulus: window.task_github + 'iaps_neg/9326.jpg', symbol: window.task_github + 'sdvp/symbol17.jpg'},
-                {stimulus: window.task_github + 'iaps_neg/9611.jpg', symbol: window.task_github + 'sdvp/symbol18.jpg'}, {stimulus: window.task_github + 'iaps_neg/9903.jpg', symbol: window.task_github + 'sdvp/symbol19.jpg'}, {stimulus: window.task_github + 'iaps_pos/1463.jpg', symbol: window.task_github + 'sdvp/symbol20.jpg'},
-                {stimulus: window.task_github + 'iaps_pos/1811.jpg', symbol: window.task_github + 'sdvp/symbol23.jpg'}, {stimulus: window.task_github + 'iaps_pos/2071.jpg', symbol: window.task_github + 'sdvp/symbol24.jpg'}, {stimulus: window.task_github + 'iaps_pos/2154.jpg', symbol: window.task_github + 'sdvp/symbol25.jpg'},
-                {stimulus: window.task_github + 'iaps_pos/4610.jpg', symbol: window.task_github + 'sdvp/symbol26.jpg'}, {stimulus: window.task_github + 'iaps_pos/5480.jpg', symbol: window.task_github + 'sdvp/symbol27.jpg'}, {stimulus: window.task_github + 'iaps_pos/5829.jpg', symbol: window.task_github + 'sdvp/symbol28.jpg'},
-                {stimulus: window.task_github + 'iaps_pos/7400.jpg', symbol: window.task_github + 'sdvp/symbol29.jpg'}, {stimulus: window.task_github + 'iaps_pos/7492.jpg', symbol: window.task_github + 'sdvp/symbol30.jpg'}, {stimulus: window.task_github + 'iaps_pos/8380.jpg', symbol: window.task_github + 'sdvp/symbol31.jpg'},
+				{stimulus: window.task_github + 'iaps_neut/6150.jpg', symbol: window.task_github + 'sdvp/symbol33.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neut/7001.jpg', symbol: window.task_github + 'sdvp/symbol34.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neut/7002.jpg', symbol: window.task_github + 'sdvp/symbol35.jpg'},
+                {stimulus: window.task_github + 'iaps_neut/7009.jpg', symbol: window.task_github + 'sdvp/symbol36.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neut/7026.jpg', symbol: window.task_github + 'sdvp/symbol37.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neut/7052.jpg', symbol: window.task_github + 'sdvp/symbol38.jpg'},
+                {stimulus: window.task_github + 'iaps_neut/7055.jpg', symbol: window.task_github + 'sdvp/symbol39.jpg'},
+				 {stimulus: window.task_github + 'iaps_neut/7080.jpg', symbol: window.task_github + 'sdvp/symbol40.jpg'}, 
+				 {stimulus: window.task_github + 'iaps_neut/7100.jpg', symbol: window.task_github + 'sdvp/symbol41.jpg'},
+                {stimulus: window.task_github + 'iaps_neut/7150.jpg', symbol: window.task_github + 'sdvp/symbol42.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neut/7705.jpg', symbol: window.task_github + 'sdvp/symbol43.jpg'}, 
+				{stimulus: window.task_github + 'sdvp/3068.jpg', symbol: window.task_github + 'sdvp/symbol1.jpg'},
+                {stimulus: window.task_github + 'sdvp/6570.jpg', symbol: window.task_github + 'sdvp/symbol2.jpg'}, 
+				{stimulus: window.task_github + 'sdvp/SDVPS_1.jpg', symbol: window.task_github + 'sdvp/symbol3.jpg'}, 
+				{stimulus: window.task_github + 'sdvp/SDVPS_2.jpg', symbol: window.task_github + 'sdvp/symbol4.jpg'},
+                {stimulus: window.task_github + 'sdvp/SDVPS_3.jpg', symbol: window.task_github + 'sdvp/symbol5.jpg'}, 
+				{stimulus: window.task_github + 'sdvp/SDVPS_4.jpg', symbol: window.task_github + 'sdvp/symbol6.jpg'}, 
+				{stimulus: window.task_github + 'sdvp/SDVPS_5.jpg', symbol: window.task_github + 'sdvp/symbol7.jpg'},
+                {stimulus: window.task_github + 'sdvp/SDVPS_6.jpg', symbol: window.task_github + 'sdvp/symbol8.jpg'}, 
+				{stimulus: window.task_github + 'sdvp/SDVPS_7.jpg', symbol: window.task_github + 'sdvp/symbol21.jpg'}, 
+				{stimulus: window.task_github + 'sdvp/SDVPS_8.jpg', symbol: window.task_github + 'sdvp/symbol22.jpg'},
+                {stimulus: window.task_github + 'iaps_neg/1525.jpg', symbol: window.task_github + 'sdvp/symbol9.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neg/2345_1.jpg', symbol: window.task_github + 'sdvp/symbol10.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neg/3150.jpg', symbol: window.task_github + 'sdvp/symbol11.jpg'},
+                {stimulus: window.task_github + 'iaps_neg/3170.jpg', symbol: window.task_github + 'sdvp/symbol12.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neg/7380.jpg', symbol: window.task_github + 'sdvp/symbol13.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neg/9140.jpg', symbol: window.task_github + 'sdvp/symbol14.jpg'},
+                {stimulus: window.task_github + 'iaps_neg/9184.jpg', symbol: window.task_github + 'sdvp/symbol15.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neg/9301.jpg', symbol: window.task_github + 'sdvp/symbol16.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neg/9326.jpg', symbol: window.task_github + 'sdvp/symbol17.jpg'},
+                {stimulus: window.task_github + 'iaps_neg/9611.jpg', symbol: window.task_github + 'sdvp/symbol18.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neg/9903.jpg', symbol: window.task_github + 'sdvp/symbol19.jpg'}, 
+				{stimulus: window.task_github + 'iaps_pos/1463.jpg', symbol: window.task_github + 'sdvp/symbol20.jpg'},
+                {stimulus: window.task_github + 'iaps_pos/1811.jpg', symbol: window.task_github + 'sdvp/symbol23.jpg'}, 
+				{stimulus: window.task_github + 'iaps_pos/2071.jpg', symbol: window.task_github + 'sdvp/symbol24.jpg'}, 
+				{stimulus: window.task_github + 'iaps_pos/2154.jpg', symbol: window.task_github + 'sdvp/symbol25.jpg'},
+                {stimulus: window.task_github + 'iaps_pos/4610.jpg', symbol: window.task_github + 'sdvp/symbol26.jpg'}, 
+				{stimulus: window.task_github + 'iaps_pos/5480.jpg', symbol: window.task_github + 'sdvp/symbol27.jpg'}, 
+				{stimulus: window.task_github + 'iaps_pos/5829.jpg', symbol: window.task_github + 'sdvp/symbol28.jpg'},
+                {stimulus: window.task_github + 'iaps_pos/7400.jpg', symbol: window.task_github + 'sdvp/symbol29.jpg'}, 
+				{stimulus: window.task_github + 'iaps_pos/7492.jpg', symbol: window.task_github + 'sdvp/symbol30.jpg'}, 
+				{stimulus: window.task_github + 'iaps_pos/8380.jpg', symbol: window.task_github + 'sdvp/symbol31.jpg'},
                 {stimulus: window.task_github + 'iaps_pos/8503.jpg', symbol: window.task_github + 'sdvp/symbol32.jpg'}
 			];
 
@@ -325,8 +353,10 @@ var response = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>How would you 
   }
 };
 
-			var test_procedure = { timeline: [fixation, test, symbol, response], 
-				timeline_variables: test_stimulus, repetitions: 1, randomize_order: false, post_trial_gap: 500 };
+var test_procedure = { 
+	timeline: [fixation, test, symbol, response], 
+timeline_variables: test_stimulus, 
+repetitions: 1, randomize_order: false, post_trial_gap: 500 };
 			timeline.push(test_procedure);
 
 var debrief_block = {
