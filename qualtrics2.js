@@ -334,7 +334,7 @@ timeline.push(MRIstart);
     task: 'fixation'
   }
 };			
-var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('stimulus'), choices: "NO_KEYS", trial_duration: 100, post_trial_gap: 125, stimulus_height: 650, maintain_aspect_ration: true,
+var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('stimulus'), choices: "NO_KEYS", trial_duration: 95, post_trial_gap: 125, stimulus_height: 650, maintain_aspect_ration: true,
   response_ends_trial: false,
  };
 			
