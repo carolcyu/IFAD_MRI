@@ -357,7 +357,7 @@ var response = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>How would you 
 var test_procedure = { 
 	timeline: [fixation, test, symbol, response], 
 timeline_variables: test_stimulus, 
-repetitions: 1, randomize_order: false, post_trial_gap: 500 };
+repetitions: 2, randomize_order: false, post_trial_gap: 250 };
 			timeline.push(test_procedure);
 
 var debrief_block = {
