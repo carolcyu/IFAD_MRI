@@ -286,8 +286,8 @@ timeline.push(MRIstart);
 				{stimulus: window.task_github + 'iaps_neut/7026.jpg', symbol: window.task_github + 'sdvp/symbol37.jpg'}, 
 				{stimulus: window.task_github + 'iaps_neut/7052.jpg', symbol: window.task_github + 'sdvp/symbol38.jpg'},
                 {stimulus: window.task_github + 'iaps_neut/7055.jpg', symbol: window.task_github + 'sdvp/symbol39.jpg'},
-				 {stimulus: window.task_github + 'iaps_neut/7080.jpg', symbol: window.task_github + 'sdvp/symbol40.jpg'}, 
-				 {stimulus: window.task_github + 'iaps_neut/7100.jpg', symbol: window.task_github + 'sdvp/symbol41.jpg'},
+				{stimulus: window.task_github + 'iaps_neut/7080.jpg', symbol: window.task_github + 'sdvp/symbol40.jpg'}, 
+				{stimulus: window.task_github + 'iaps_neut/7100.jpg', symbol: window.task_github + 'sdvp/symbol41.jpg'},
                 {stimulus: window.task_github + 'iaps_neut/7150.jpg', symbol: window.task_github + 'sdvp/symbol42.jpg'}, 
 				{stimulus: window.task_github + 'iaps_neut/7705.jpg', symbol: window.task_github + 'sdvp/symbol43.jpg'}, 
 				{stimulus: window.task_github + 'sdvp/3068.jpg', symbol: window.task_github + 'sdvp/symbol1.jpg'},
@@ -338,7 +338,7 @@ var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVaria
   response_ends_trial: false,
  };
 			
-var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('symbol'), choices: "NO_KEYS", trial_duration: 130, maintain_aspect_ration: true,
+var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('symbol'), choices: "NO_KEYS", trial_duration: 135, maintain_aspect_ration: true,
   response_ends_trial: false,
   };
 			
