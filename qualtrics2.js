@@ -321,7 +321,7 @@ timeline.push(MRIstart);
                 {stimulus: window.task_github + 'iaps_pos/7400.jpg', symbol: window.task_github + 'sdvp/symbol29.jpg'}, 
 				{stimulus: window.task_github + 'iaps_pos/7492.jpg', symbol: window.task_github + 'sdvp/symbol30.jpg'}, 
 				{stimulus: window.task_github + 'iaps_pos/8380.jpg', symbol: window.task_github + 'sdvp/symbol31.jpg'},
-                {stimulus: window.task_github + 'iaps_pos/8503.jpg', symbol: window.task_github + 'sdvp/symbol32.jpg'}
+                {stimulus: window.task_github + 'iaps_pos/8503.jpg', symbol: window.task_github + 'sdvp/symbol32.jpg'},
 			];
 
     var fixation = {
@@ -329,16 +329,16 @@ timeline.push(MRIstart);
   stimulus: '<div style="font-size:60px;">+</div>',
   choices: "NO_KEYS",
   response_ends_trial: false,
-  trial_duration: 500,
+  trial_duration: 600,
   data: {
     task: 'fixation'
   }
 };			
-var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('stimulus'), choices: "NO_KEYS", trial_duration: 75, post_trial_gap: 125, stimulus_height: 650, maintain_aspect_ration: true,
+var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('stimulus'), choices: "NO_KEYS", trial_duration: 100, post_trial_gap: 125, stimulus_height: 650, maintain_aspect_ration: true,
   response_ends_trial: false,
  };
 			
-var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('symbol'), choices: "NO_KEYS", trial_duration: 100, maintain_aspect_ration: true,
+var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('symbol'), choices: "NO_KEYS", trial_duration: 120, maintain_aspect_ration: true,
   response_ends_trial: false,
   };
 			
