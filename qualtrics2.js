@@ -338,7 +338,7 @@ var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVaria
   response_ends_trial: false,
  };
 			
-var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('symbol'), choices: "NO_KEYS", trial_duration: 120, maintain_aspect_ration: true,
+var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('symbol'), choices: "NO_KEYS", trial_duration: 130, maintain_aspect_ration: true,
   response_ends_trial: false,
   };
 			
