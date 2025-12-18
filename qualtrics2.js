@@ -277,6 +277,17 @@ var MRIstart ={
  }
 };
 timeline.push(MRIstart);
+var fixation_start = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: '<div style="font-size:60px;">+</div>',
+  choices: "NO_KEYS",
+  response_ends_trial: false,
+  trial_duration: 15000,
+  data: {
+    task: 'fixation_start'
+  }
+};	
+timeline.push(fixation_start);
 
 			var test_stimulus = [
 				{stimulus: window.task_github + 'iaps_neut/6150.jpg', symbol: window.task_github + 'sdvp/symbol33.jpg'}, 
@@ -360,6 +371,17 @@ timeline_variables: test_stimulus,
 repetitions: 2, randomize_order: false, post_trial_gap: 250 };
 			timeline.push(test_procedure);
 
+var fixation_end = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: '<div style="font-size:60px;">+</div>',
+  choices: "NO_KEYS",
+  response_ends_trial: false,
+  trial_duration: 15000,
+  data: {
+    task: 'fixation_end'
+  }
+};	
+timeline.push(fixation_end);
 var debrief_block = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: function() {
@@ -401,7 +423,7 @@ timeline.push(debrief_block);
                         return; // Ignore other keys
                     }
                 }
-                if (currentTrial && currentTrial.data && currentTrial.data.task === 'fixation') {
+                if (currentTrial && currentTrial.data && currentTrial.data.task === 'fixation','fixation_end','fixation_start') {
                 // If it is a fixation trial, IGNORE ALL key presses and DO NOT advance the trial.
                 console.log('Key ignored during fixation.');
                 return; 
