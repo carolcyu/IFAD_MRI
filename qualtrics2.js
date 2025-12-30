@@ -119,7 +119,8 @@ Qualtrics.SurveyEngine.addOnload(function()
             window.task_github + "jspsych/jspsych.js",
             window.task_github + "jspsych/plugin-image-keyboard-response.js",
             window.task_github + "jspsych/plugin-html-button-response.js", 
-            window.task_github + "jspsych/plugin-html-keyboard-response.js", 
+            window.task_github + "jspsych/plugin-preload.js", 
+        window.task_github + "jspsych/plugin-html-keyboard-response.js", 
             window.task_github + "jspsych/plugin-categorize-html.js"
         ];
         
@@ -415,6 +416,17 @@ var response = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>How would you 
     data.response;
   }
 };
+var preload = {
+    type: jsPsychPreload,
+    auto_preload: true,
+    on_finish: function(data) {
+        console.log('[ifad] Preload completed:', {
+            success_count: data.success_count,
+            fail_count: data.fail_count,
+            errors: data.errors
+        });
+    }
+};
 
 var test_procedure = { 
 	timeline: [fixation, test, symbol, response], 
@@ -422,6 +434,8 @@ timeline_variables: test_stimulus,
 repetitions: 1, 
 randomize_order: false, 
 post_trial_gap: 250 };
+
+timeline.push(preload);
 			timeline.push(test_procedure);
 
 var fixation_end = {
