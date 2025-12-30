@@ -245,6 +245,19 @@ function initExp(){
     };
 			timeline.push(welcome);
 
+                var preload = {
+    type: jsPsychPreload,
+    auto_preload: true,
+    on_finish: function(data) {
+        console.log('[ifad] Preload completed:', {
+            success_count: data.success_count,
+            fail_count: data.fail_count,
+            errors: data.errors
+        });
+    }
+};
+    timeline.push(preload);
+
 			var instructions = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>In this task, an image will appear on the screen followed by a symbol.</p><p>Using the response pad, please rate <strong>HOW PLEASANT a SYMBOL is</strong>, as quickly as you can. </p><p>Try to focus on rating the symbol.</p>", 
 				choices: "ALL_KEYS",
       response_ends_trial: true,
@@ -264,19 +277,6 @@ var questions = {
       stimulus: "<p>If you have questions or concerns, please signal to the examiner. </p> <p>If not, press any button to continue. </p>"
     };
     timeline.push(questions);
-
-    var preload = {
-    type: jsPsychPreload,
-    auto_preload: true,
-    on_finish: function(data) {
-        console.log('[ifad] Preload completed:', {
-            success_count: data.success_count,
-            fail_count: data.fail_count,
-            errors: data.errors
-        });
-    }
-};
-    timeline.push(preload);
 
 /*define trial awaiting for the scanner keyboard button #5 */
 var MRIstart ={
