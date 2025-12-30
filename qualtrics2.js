@@ -265,6 +265,19 @@ var questions = {
     };
     timeline.push(questions);
 
+    var preload = {
+    type: jsPsychPreload,
+    auto_preload: true,
+    on_finish: function(data) {
+        console.log('[ifad] Preload completed:', {
+            success_count: data.success_count,
+            fail_count: data.fail_count,
+            errors: data.errors
+        });
+    }
+};
+    timeline.push(preload);
+
 /*define trial awaiting for the scanner keyboard button #5 */
 var MRIstart ={
   type: jsPsychHtmlKeyboardResponse,
@@ -397,7 +410,15 @@ timeline.push(fixation_start);
     task: 'fixation'
   }
 };			
-var test = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVariable('stimulus'), choices: "NO_KEYS", trial_duration: 95, post_trial_gap: 125, stimulus_height: 650, maintain_aspect_ratio: true,
+var test = { 
+    type: jsPsychImageKeyboardResponse, 
+    stimulus: jsPsych.timelineVariable('stimulus'), 
+    choices: "NO_KEYS", 
+    trial_duration: 95, 
+    render_on_canvas: false,
+    post_trial_gap: 125, 
+    stimulus_height: 650, 
+    maintain_aspect_ratio: true,
   response_ends_trial: false,
  };
 			
@@ -416,17 +437,7 @@ var response = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>How would you 
     data.response;
   }
 };
-var preload = {
-    type: jsPsychPreload,
-    auto_preload: true,
-    on_finish: function(data) {
-        console.log('[ifad] Preload completed:', {
-            success_count: data.success_count,
-            fail_count: data.fail_count,
-            errors: data.errors
-        });
-    }
-};
+
 
 var test_procedure = { 
 	timeline: [fixation, test, symbol, response], 
@@ -434,8 +445,6 @@ timeline_variables: test_stimulus,
 repetitions: 1, 
 randomize_order: false, 
 post_trial_gap: 250 };
-
-timeline.push(preload);
 			timeline.push(test_procedure);
 
 var fixation_end = {
