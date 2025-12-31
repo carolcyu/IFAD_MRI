@@ -32,9 +32,10 @@
     };
 			timeline.push(welcome);
 
-                var preload = {
+      var preload = {
     type: jsPsychPreload,
     auto_preload: true,
+	images: test_stimulus.flatMap(s => [s.stimulus, s.symbol]) // Explicitly preload both
     on_finish: function(data) {
         console.log('[ifad] Preload completed:', {
             success_count: data.success_count,
@@ -213,18 +214,18 @@ var symbol = { type: jsPsychImageKeyboardResponse, stimulus: jsPsych.timelineVar
   response_ends_trial: false,
   };
 			
-var response = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>How would you rate that symbol?</p>", 
-	  choices: ['1', '2', '3', '4'],
-  trial_duration: 1500,
-  response_ends_trial: false,
-  data: {
-    task: 'response'
-  },
-  on_finish: function(data){
-    data.response;
-  }
+var response = { 
+    type: jsPsychHtmlKeyboardResponse, 
+    stimulus: "<p>How would you rate that symbol?</p>",   
+    choices: ['1', '2', '3', '4'],
+    trial_duration: 1500,
+    response_ends_trial: false,
+    data: {
+        task: 'response',
+        prime: jsPsych.timelineVariable('stimulus'), // Records the prime image
+        target: jsPsych.timelineVariable('symbol')   // Records the symbol
+    }
 };
-
 
 var test_procedure = { 
 	timeline: [fixation, test, symbol, response], 
