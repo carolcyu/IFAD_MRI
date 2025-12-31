@@ -24,18 +24,6 @@
     var timeline = [];
 
 			    /* define welcome message trial */
- var preload = {
-    type: jsPsychPreload,
-    auto_preload: true,
-    on_finish: function(data) {
-        console.log('[ifad] Preload completed:', {
-            success_count: data.success_count,
-            fail_count: data.fail_count,
-            errors: data.errors
-        });
-    }
-};
-    timeline.push(preload);
 	  
 			var welcome = { type: jsPsychHtmlKeyboardResponse, 
 				stimulus: " <p>Welcome to the Modified Affect-Misattribution Task! </p> <p>Press any button for instructions. </p>",
@@ -56,6 +44,32 @@
       response_ends_trial: true,
       post_trial_gap: 1000 };
 			timeline.push(instructions2);
+
+            // Define image sets
+var iaps_neut = ['iaps_neut/6150.jpg', 'iaps_neut/7001.jpg', 'iaps_neut/7002.jpg', 'iaps_neut/7009.jpg', 'iaps_neut/7026.jpg', 'iaps_neut/7052.jpg', 'iaps_neut/7055.jpg', 'iaps_neut/7080.jpg', 'iaps_neut/7100.jpg', 'iaps_neut/7150.jpg', 'iaps_neut/7705.jpg'];
+var iaps_neg = ['iaps_neg/1525.jpg', 'iaps_neg/2345_1.jpg', 'iaps_neg/3150.jpg', 'iaps_neg/3170.jpg', 'iaps_neg/7380.jpg', 'iaps_neg/9140.jpg', 'iaps_neg/9184.jpg', 'iaps_neg/9301.jpg', 'iaps_neg/9326.jpg', 'iaps_neg/9611.jpg', 'iaps_neg/9903.jpg'];
+var iaps_pos = ['iaps_pos/1463.jpg', 'iaps_pos/1811.jpg', 'iaps_pos/2071.jpg', 'iaps_pos/2154.jpg', 'iaps_pos/4610.jpg', 'iaps_pos/5480.jpg', 'iaps_pos/5829.jpg', 'iaps_pos/7400.jpg', 'iaps_pos/7492.jpg', 'iaps_pos/8380.jpg', 'iaps_pos/8503.jpg'];
+var sdvp_stim = ['sdvp/3068.jpg', 'sdvp/6570.jpg', 'sdvp/SDVPS_1.jpg', 'sdvp/SDVPS_2.jpg', 'sdvp/SDVPS_3.jpg', 'sdvp/SDVPS_4.jpg', 'sdvp/SDVPS_5.jpg', 'sdvp/SDVPS_6.jpg', 'sdvp/SDVPS_7.jpg', 'sdvp/SDVPS_8.jpg'];
+var symbols = [];
+for (var i = 1; i <= 43; i++) { symbols.push('sdvp/symbol' + i + '.jpg'); }
+
+// Combine all images into one array for preloading
+var all_images = [].concat(iaps_neut, iaps_neg, iaps_pos, sdvp_stim, symbols, ['img/response_key.png']); 
+
+var preload = {
+    type: jsPsychPreload,
+    images: all_images, // Explicitly pass the array
+    message: 'Loading task stimuli. Please wait...',
+    show_progress_bar: true,
+    continue_after_error: false, // Prevents task from starting if images are missing
+    on_error: function(file) {
+        console.log('Error loading file: ', file);
+    },
+    on_finish: function(data) {
+        console.log('Preload finished. Success:', data.success);
+    }
+};
+timeline.push(preload);
 
 			/*questions for the examiner*/
 var questions = {
