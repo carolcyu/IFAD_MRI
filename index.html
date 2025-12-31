@@ -35,7 +35,7 @@
       var preload = {
     type: jsPsychPreload,
     auto_preload: true,
-	images: test_stimulus.flatMap(s => [s.stimulus, s.symbol]) // Explicitly preload both
+	images: test_stimulus.flatMap(s => [s.stimulus, s.symbol]), // Explicitly preload both
     on_finish: function(data) {
         console.log('[ifad] Preload completed:', {
             success_count: data.success_count,
