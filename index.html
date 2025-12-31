@@ -24,15 +24,7 @@
     var timeline = [];
 
 			    /* define welcome message trial */
-
-			var welcome = { type: jsPsychHtmlKeyboardResponse, 
-				stimulus: " <p>Welcome to the Modified Affect-Misattribution Task! </p> <p>Press any button for instructions. </p>",
-				    choices: "ALL_KEYS",
-      response_ends_trial: true
-    };
-			timeline.push(welcome);
-
-      var preload = {
+ var preload = {
     type: jsPsychPreload,
     auto_preload: true,
     on_finish: function(data) {
@@ -44,6 +36,13 @@
     }
 };
     timeline.push(preload);
+	  
+			var welcome = { type: jsPsychHtmlKeyboardResponse, 
+				stimulus: " <p>Welcome to the Modified Affect-Misattribution Task! </p> <p>Press any button for instructions. </p>",
+				    choices: "ALL_KEYS",
+      response_ends_trial: true
+    };
+			timeline.push(welcome);
 
 			var instructions = { type: jsPsychHtmlKeyboardResponse, stimulus: "<p>In this task, an image will appear on the screen followed by a symbol.</p><p>Using the response pad, please rate <strong>HOW PLEASANT a SYMBOL is</strong>, as quickly as you can. </p><p>Try to focus on rating the symbol.</p>", 
 				choices: "ALL_KEYS",
