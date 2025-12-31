@@ -58,17 +58,23 @@ var all_images = [].concat(iaps_neut, iaps_neg, iaps_pos, sdvp_stim, symbols, ['
 
 var preload = {
     type: jsPsychPreload,
-    images: all_images, // Explicitly pass the array
-    message: 'Loading task stimuli. Please wait...',
-    show_progress_bar: true,
-    continue_after_error: false, // Prevents task from starting if images are missing
-    on_error: function(file) {
-        console.log('Error loading file: ', file);
-    },
+    images: all_images,
+    message: `
+        <div style="text-align:center;">
+            <p><strong>Preparing Task...</strong></p>
+            <div style="width:300px; height: 20px; background-color: #ddd; margin: auto;">
+                <div id="jspsych-preload-progress-bar" style="background-color: #333; height: 20px; width: 0%;"></div>
+            </div>
+            <p>Please wait until all stimuli are cached.</p>
+        </div>`,
+    auto_preload: false, // We are manually providing the list for "forced" loading
+    continue_after_error: false, // CRITICAL: Stop the task if a file is missing
+    error_message: '<p>Error: One or more images failed to load. Please check your file paths and server connection.</p>',
     on_finish: function(data) {
-        console.log('Preload finished. Success:', data.success);
+        console.log("Forced Preload Complete. Status:", data.success ? "Success" : "Failed");
     }
 };
+
 timeline.push(preload);
 
 			/*questions for the examiner*/
