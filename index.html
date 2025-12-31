@@ -17,7 +17,7 @@
     /* initialize jsPsych */
      var jsPsych = initJsPsych({
         on_finish: function() {
-        jsPsych.data.displayData();
+        saveDataAsJSON('IFAD_data_task2.json', jsPsych.data.get().json());
       }
     }); 
     /* create timeline */
