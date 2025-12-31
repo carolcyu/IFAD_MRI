@@ -17,7 +17,7 @@
     /* initialize jsPsych */
      var jsPsych = initJsPsych({
         on_finish: function() {
-        console.log('IFAD_data_task2.json', jsPsych.data.get().json());
+			jsPsych.data.get().localSave('json', 'IFAD_data_task2.json');
       }
     }); 
     /* create timeline */
