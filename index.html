@@ -46,9 +46,10 @@ var preload = {
             </div>
             <p>Please wait until all stimuli are cached.</p>
         </div>`,
-    auto_preload: false, // We are manually providing the list for "forced" loading
+    auto_preload: true, 
+    show_detailed_errors: true,
     continue_after_error: false, // CRITICAL: Stop the task if a file is missing
-    error_message: '<p>Error: One or more images failed to load. Please check your file paths and server connection.</p>',
+    error_message: '<p>Error: Failed to load images. Please try again.</p>',
     on_finish: function(data) {
         console.log("Forced Preload Complete. Status:", data.success ? "Success" : "Failed");
     }
